@@ -57,7 +57,7 @@ public class EditPanel extends BasePanel {
 		layoutPane = new JPanel();
 		GridBagLayout gbl_general = new GridBagLayout();
 		gbl_general.columnWidths = new int[]{46, 0, 0, 0, 0};
-		gbl_general.rowHeights = new int[]{0, 20, 21, 0, 0, 0};
+		gbl_general.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_general.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_general.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		layoutPane.setLayout(gbl_general);

@@ -3,6 +3,7 @@ package control.handler;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -42,6 +43,35 @@ public class EditHandler extends BaseHandler {
 	}
 
 	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() instanceof JTextField) {
+			JTextField t = (JTextField) evt.getSource();
+			try {
+				Integer.parseInt(t.getText());
+				revalidate();
+			} catch (NumberFormatException e) {
+				t.setText("0");
+			}
+		} else if (evt.getSource() instanceof JMenuItem) {
+			JMenuItem item = (JMenuItem) evt.getSource();
+			
+			// TODO: this is ugly
+			if (item.getText().equals("Export...")) {
+				revalidate();
+				
+				JFileChooser chooser = new JFileChooser();
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				if (chooser.showSaveDialog(editPanel) == JFileChooser.APPROVE_OPTION) {
+					if (Visualizer.exportToImage(chooser.getSelectedFile(), lastInfoSet)) {
+						// TODO: add message here
+					}
+				}
+			}
+
+		}
+	}
+
+	@Override
 	public BasePanel getViewPanel() {
 		return this.editPanel;
 	}
@@ -64,27 +94,6 @@ public class EditHandler extends BaseHandler {
 	@Override
 	public boolean isValidNumber() {
 		return false;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() instanceof JTextField) {
-			JTextField t = (JTextField) evt.getSource();
-			try {
-				Integer.parseInt(t.getText());
-				revalidate();
-			} catch (NumberFormatException e) {
-				t.setText("0");
-			}
-		} else if (evt.getSource() instanceof JMenuItem) {
-			JMenuItem item = (JMenuItem) evt.getSource();
-
-			// TODO: this is ugly
-			if (item.getText().equals("Export...")) {
-				
-			}
-
-		}
 	}
 
 	@Override
