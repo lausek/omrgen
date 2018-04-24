@@ -1,8 +1,9 @@
 package control.handler;
 
+import control.InputListener;
 import view.BasePanel;
 
-public abstract class BaseHandler {
+public abstract class BaseHandler implements InputListener {
 	
 	public BasePanel getViewPanel() {
 		return null;
