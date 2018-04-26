@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.JSplitPane;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -24,10 +26,12 @@ import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.JTabbedPane;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
+
 import java.awt.Component;
 import javax.swing.Box;
 
-public class EditPanel extends BasePanel {
+public class EditPanel extends BasePanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,6 +40,7 @@ public class EditPanel extends BasePanel {
 
 	private JPanel layoutPane;
 	private JScrollPane scrollPane;
+	private JButton btnColorFore, btnColorBack;
 	private JLabel preview;
 	// padding
 	private JTextField tf_pleft, tf_pright, tf_ptop, tf_pbottom;
@@ -134,9 +139,9 @@ public class EditPanel extends BasePanel {
 		JPanel colorPane = new JPanel();
 		tabbedPane.addTab("Color", null, colorPane, null);
 		GridBagLayout gbl_colorPane = new GridBagLayout();
-		gbl_colorPane.columnWidths = new int[] { 0, 0, 0 };
+		gbl_colorPane.columnWidths = new int[] { 0, 0, 0, 0 };
 		gbl_colorPane.rowHeights = new int[] { 0, 0, 0, 0, 0 };
-		gbl_colorPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_colorPane.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_colorPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		colorPane.setLayout(gbl_colorPane);
 
@@ -145,6 +150,22 @@ public class EditPanel extends BasePanel {
 
 		tf_background = new JTextField();
 		addTextFieldAt(1, 1, "Background", tf_background, colorPane);
+
+		btnColorFore = new JButton("...");
+		btnColorFore.addActionListener(this);
+		GridBagConstraints gbc_btnColorFore = new GridBagConstraints();
+		gbc_btnColorFore.insets = new Insets(0, 0, 5, 0);
+		gbc_btnColorFore.gridx = 2;
+		gbc_btnColorFore.gridy = 0;
+		colorPane.add(btnColorFore, gbc_btnColorFore);
+
+		btnColorBack = new JButton("...");
+		btnColorBack.addActionListener(this);
+		GridBagConstraints gbc_btnColorBack = new GridBagConstraints();
+		gbc_btnColorBack.insets = new Insets(0, 0, 5, 0);
+		gbc_btnColorBack.gridx = 2;
+		gbc_btnColorBack.gridy = 1;
+		colorPane.add(btnColorBack, gbc_btnColorBack);
 
 		Component verticalStrut = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
@@ -204,7 +225,7 @@ public class EditPanel extends BasePanel {
 		tf.setColumns(6);
 		tf.setText("0");
 	}
-	
+
 	private int tryConvert(JTextField textField) {
 		try {
 			return Integer.parseInt(textField.getText());
@@ -212,29 +233,23 @@ public class EditPanel extends BasePanel {
 			return 0;
 		}
 	}
-	
+
 	public CodeInfoSet getInfoSet() {
 		CodeInfoSet c = new CodeInfoSet();
 
 		int amount = (int) sp_stripes.getValue();
 		int width = tryConvert(tf_width);
 		int height = tryConvert(tf_height);
+
 		
-		try {
-			c.foreground = new java.awt.Color(Integer.parseInt(tf_foreground.getText()));
-		} catch (NumberFormatException e) {
-		}
-		
-		try {
-			c.background = new java.awt.Color(Integer.parseInt(tf_background.getText()));
-		} catch (NumberFormatException e) {
-		}
-		
+		c.foreground = getForegroundColor();
+		c.background = getBackgroundColor();
+
 		c.marginLeft = tryConvert(tf_mleft);
 		c.marginRight = tryConvert(tf_mright);
 		c.marginTop = tryConvert(tf_mtop);
 		c.marginBottom = tryConvert(tf_mbottom);
-			
+
 		c.stripes = new CodeStripe[amount];
 		for (int i = 0; i < amount; i++) {
 			c.stripes[i] = new CodeStripe(width, height);
@@ -270,6 +285,40 @@ public class EditPanel extends BasePanel {
 			tf_background.setText("" + bg.getRGB());
 		} else {
 			tf_background.setText("" + CodeInfoSet.BACKGROUND.getRGB());
+		}
+	}
+	
+	private Color getForegroundColor() {
+		try {
+			return new java.awt.Color(Integer.parseInt(tf_foreground.getText()));
+		} catch (NumberFormatException e) {
+			return CodeInfoSet.FOREGROUND;
+		}
+	}
+	
+	private Color getBackgroundColor() {
+		try {
+			return new java.awt.Color(Integer.parseInt(tf_background.getText()));
+		} catch (NumberFormatException e) {
+			return CodeInfoSet.BACKGROUND;
+		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		if (!(arg0.getSource() instanceof JButton)) {
+			return;
+		}
+		
+		java.awt.Color next;
+		JButton source = (JButton) arg0.getSource();
+		
+		if (source == btnColorFore) {
+			next = JColorChooser.showDialog(this, "Pick foreground color", getForegroundColor());
+			setColors(next, getBackgroundColor());
+		} else if (source == btnColorBack) {
+			next = JColorChooser.showDialog(this, "Pick background color", getBackgroundColor());
+			setColors(getForegroundColor(), next);
 		}
 	}
 
