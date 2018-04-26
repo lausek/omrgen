@@ -45,6 +45,7 @@ public class Visualizer {
 		return b;
 	}
 
+	// TODO: add throws
 	public static boolean exportToImage(File target, CodeInfoSet codeInfoSet) {
 
 		try {

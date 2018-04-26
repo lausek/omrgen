@@ -32,7 +32,6 @@ public class EditHandler extends BaseHandler {
 	private void revalidate() {
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
-			// TODO: rebuild
 			try {
 				standardPreview = Visualizer.toImage(next);
 				editPanel.setPreview(standardPreview);
@@ -63,8 +62,9 @@ public class EditHandler extends BaseHandler {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				if (chooser.showSaveDialog(editPanel) == JFileChooser.APPROVE_OPTION) {
+					// TODO: add try for exportToImage
 					if (Visualizer.exportToImage(chooser.getSelectedFile(), lastInfoSet)) {
-						// TODO: add message here
+						editPanel.displayMessage(MessageType.SUCCESS, "Export finished");
 					}
 				}
 			}

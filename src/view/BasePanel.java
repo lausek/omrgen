@@ -30,6 +30,24 @@ public class BasePanel extends JPanel {
 		return true;
 	}
 	
+	public boolean confirmMessage(MessageType typ, String text) {
+		switch(typ) {
+		case INFO:
+			return JOptionPane.showConfirmDialog(this, text, "Info", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
+			
+		case SUCCESS:
+			return JOptionPane.showConfirmDialog(this, text, "Info", JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION;
+			
+		case WARNING:
+			return JOptionPane.showConfirmDialog(this, text, "Info", JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION;
+			
+		case ERROR:
+			return JOptionPane.showConfirmDialog(this, text, "Info", JOptionPane.ERROR_MESSAGE) == JOptionPane.YES_OPTION;
+			
+		}
+		return false;
+	}
+	
 	public void displayMessage(MessageType typ, String text) {
 		switch(typ) {
 		case INFO:
