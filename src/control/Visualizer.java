@@ -17,7 +17,11 @@ public class Visualizer {
 		int h = codeInfoSet.getHeight();
 
 		if (w <= 0 || h <= 0) {
-			throw new LayoutException();
+			if (0 < codeInfoSet.stripes.length) {
+				throw new LayoutException("Please specify width and height");
+			} else {
+				throw new LayoutException("Please set at least one stripe");
+			}
 		}
 
 		BufferedImage b = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);

@@ -12,6 +12,7 @@ import control.LayoutException;
 import control.Visualizer;
 import data.CodeInfoSet;
 import view.BasePanel;
+import view.BasePanel.MessageType;
 import view.EditPanel;
 
 public class EditHandler extends BaseHandler {
@@ -27,7 +28,7 @@ public class EditHandler extends BaseHandler {
 
 		editPanel.setPreview(standardPreview);
 	}
-
+	
 	private void revalidate() {
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
@@ -37,7 +38,7 @@ public class EditHandler extends BaseHandler {
 				editPanel.setPreview(standardPreview);
 				lastInfoSet = next;
 			} catch (LayoutException e) {
-				e.printStackTrace();
+				editPanel.displayMessage(MessageType.ERROR, e.getMessage());
 			}
 		}
 	}
