@@ -21,23 +21,12 @@ public class EditPanel extends BasePanel {
 
 	private static final long serialVersionUID = 1L;
 
-//	public JTextField tf_width, tf_height;
-//	public JSpinner sp_stripes;
-
 	private LayoutPanel layoutPanel;
 	private PagePanel pagePanel;
 	private ColorPanel colorPanel;
 	
-//	private JPanel layoutPane;
 	private JScrollPane scrollPane;
-//	private JButton btnColorFore, btnColorBack;
 	private JLabel preview;
-	// padding
-//	private JTextField tf_pleft, tf_pright, tf_ptop, tf_pbottom;
-	// margin
-//	private JTextField tf_mleft, tf_mright, tf_mtop, tf_mbottom;
-	// color
-//	private JTextField tf_foreground, tf_background;
 
 	public EditPanel(InputListener listener) {
 		super(listener);

@@ -20,7 +20,7 @@ public class ColorPanel extends BasePanel implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JButton btnColorFore, btnColorBack;
+	private JButton btnColorFore, btnColorBack, btnReset;
 	private JTextField tf_foreground, tf_background;
 	
 	public ColorPanel(InputListener listener) {
@@ -62,20 +62,13 @@ public class ColorPanel extends BasePanel implements ActionListener {
 		gbc_verticalStrut.gridy = 2;
 		add(verticalStrut, gbc_verticalStrut);
 
-		JButton btnReset = new JButton("Reset colors");
+		btnReset = new JButton("Reset colors");
 		GridBagConstraints gbc_btnReset = new GridBagConstraints();
 		gbc_btnReset.insets = new Insets(0, 0, 0, 5);
 		gbc_btnReset.gridx = 0;
 		gbc_btnReset.gridy = 3;
 		add(btnReset, gbc_btnReset);
-		btnReset.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (confirmMessage(MessageType.INFO, "Reset colors?")) {
-					resetColors();
-				}
-			}
-		});
+		btnReset.addActionListener(this);
 		resetColors();
 		
 	}
@@ -129,6 +122,10 @@ public class ColorPanel extends BasePanel implements ActionListener {
 		} else if (source == btnColorBack) {
 			next = JColorChooser.showDialog(this, "Pick background color", getBackgroundColor());
 			setColors(getForegroundColor(), next);
+		} else if (source == btnReset) {
+			if (confirmMessage(MessageType.INFO, "Reset colors?")) {
+				resetColors();
+			}
 		}
 	}
 	
