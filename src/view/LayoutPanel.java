@@ -39,8 +39,8 @@ public class LayoutPanel extends BasePanel {
 		gbc_lblStripes.gridy = 0;
 		add(lblStripes, gbc_lblStripes);
 
-		sp_stripes = new JSpinner();
-		sp_stripes.addChangeListener(listener);
+		sp_stripes = new JSpinner(new javax.swing.SpinnerNumberModel(1,1,999,1));
+	    sp_stripes.addChangeListener(listener);
 		GridBagConstraints gbc_sp_stripes = new GridBagConstraints();
 		gbc_sp_stripes.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sp_stripes.insets = new Insets(0, 0, 5, 5);

@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
@@ -28,7 +29,7 @@ public class EditHandler extends BaseHandler {
 
 		editPanel.setPreview(standardPreview);
 	}
-	
+
 	private void revalidate() {
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
@@ -54,11 +55,11 @@ public class EditHandler extends BaseHandler {
 			}
 		} else if (evt.getSource() instanceof JMenuItem) {
 			JMenuItem item = (JMenuItem) evt.getSource();
-			
+
 			// TODO: this is ugly
 			if (item.getText().equals("Export...")) {
 				revalidate();
-				
+
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				if (chooser.showSaveDialog(editPanel) == JFileChooser.APPROVE_OPTION) {
@@ -68,7 +69,13 @@ public class EditHandler extends BaseHandler {
 					}
 				}
 			}
-
+		}
+	}
+	
+	@Override
+	public void stateChanged(ChangeEvent evt) {
+		if (evt.getSource() instanceof JSpinner) {
+			revalidate();
 		}
 	}
 
@@ -95,11 +102,6 @@ public class EditHandler extends BaseHandler {
 	@Override
 	public boolean isValidNumber() {
 		return false;
-	}
-
-	@Override
-	public void stateChanged(ChangeEvent e) {
-
 	}
 
 }
