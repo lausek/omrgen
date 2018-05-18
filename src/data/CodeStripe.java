@@ -1,6 +1,10 @@
 package data;
 
-public class CodeStripe {
+import java.io.Serializable;
+
+public class CodeStripe implements Serializable {
+	
+	private static final long serialVersionUID = 8915768258051523330L;
 	
 	public Size width, height;
 	public Size paddingLeft, paddingRight, paddingTop, paddingBottom;

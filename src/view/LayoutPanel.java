@@ -9,6 +9,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
 import control.InputListener;
+import data.CodeInfoSet;
+import data.CodeStripe;
 import data.LayoutInfoSet;
 
 public class LayoutPanel extends BasePanel {
@@ -91,6 +93,25 @@ public class LayoutPanel extends BasePanel {
 
 		tf_mbottom = new JTextField();
 		addTextFieldAt(3, 9, "Bottom", tf_mbottom);
+	}
+	
+	public void setInfoSet(CodeInfoSet next) {
+		CodeStripe first = next.stripes[0];
+		tf_height.setText(first.height.toString());
+		tf_width.setText(first.width.toString());
+		
+		tf_pleft.setText(first.paddingLeft.toString());
+		tf_pright.setText(first.paddingRight.toString());
+		tf_ptop.setText(first.paddingTop.toString());
+		tf_pbottom.setText(first.paddingBottom.toString());
+
+		tf_mleft.setText(next.marginLeft.toString());
+		tf_mright.setText(next.marginRight.toString());
+		tf_mtop.setText(next.marginTop.toString());
+		tf_mbottom.setText(next.marginBottom.toString());
+		
+		// this triggers a revalidate!
+		sp_stripes.setValue(next.stripes.length);
 	}
 	
 	public LayoutInfoSet getInfoSet() {

@@ -1,6 +1,7 @@
 package control;
 
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.UIManager;
 
@@ -36,7 +37,15 @@ public class Control {
 		}
 		return false;
 	}
-
+	
+	public boolean loadState(File fp) {
+		return editHandler.loadState(fp);
+	}
+	
+	public boolean saveState(File fp) {
+		return editHandler.saveState(fp);
+	}
+	
 	public static void main(String[] args) {
 		new Control();
 	}

@@ -1,8 +1,12 @@
 package data;
 
-public class Size {
+import java.io.Serializable;
 
-//	mm -> pixel
+public class Size implements Serializable {
+
+	private static final long serialVersionUID = -9063779500109067068L;
+	
+	//	mm -> pixel
 	public static final double PIXEL_FACTOR = 3.779528;
 	
 	public static enum Unit {
@@ -41,6 +45,11 @@ public class Size {
 	
 	public float set() {
 		return value;
+	}
+	
+	@Override
+	public String toString() {
+		return "" + value;
 	}
 	
 }

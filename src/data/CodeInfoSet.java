@@ -1,8 +1,11 @@
 package data;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class CodeInfoSet {
+public class CodeInfoSet implements Serializable {
+	
+	private static final long serialVersionUID = 4779624829605069189L;
 	
 	public static final Color FOREGROUND = Color.BLACK;
 	public static final Color BACKGROUND = Color.WHITE;

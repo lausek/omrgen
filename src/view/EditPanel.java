@@ -53,7 +53,12 @@ public class EditPanel extends BasePanel {
 		tabbedPane.addTab("Color", colorPanel);
 		tabbedPane.addTab("Pages", pagePanel);
 	}
-
+	
+	public void setInfoSet(CodeInfoSet next) {
+		layoutPanel.setInfoSet(next);
+		colorPanel.setInfoSet(next);
+	}
+	
 	public CodeInfoSet getInfoSet() {
 		CodeInfoSet c = new CodeInfoSet();
 		
