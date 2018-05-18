@@ -7,7 +7,8 @@ public class CodeStripe implements Serializable {
 	private static final long serialVersionUID = 8915768258051523330L;
 	
 	public Size width, height;
-	public Size paddingLeft, paddingRight, paddingTop, paddingBottom;
+	public Size pitch;
+	public Size paddingLeft, paddingRight; //, paddingTop, paddingBottom;
 	public boolean active;
 	
 	public CodeStripe(Size width, Size height) {
@@ -20,7 +21,7 @@ public class CodeStripe implements Serializable {
 	}
 	
 	public Size getHeight() {
-		return paddingTop.add(paddingBottom).add(height);
+		return height.add(pitch);
 	}
 	
 }

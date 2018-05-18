@@ -19,8 +19,9 @@ public class LayoutPanel extends BasePanel {
 	
 	public JTextField tf_width, tf_height;
 	public JSpinner sp_stripes;
+	private JTextField tf_pitch;
 	// padding
-	private JTextField tf_pleft, tf_pright, tf_ptop, tf_pbottom;
+	private JTextField tf_pleft, tf_pright;
 	// margin
 	private JTextField tf_mleft, tf_mright, tf_mtop, tf_mbottom;
 	
@@ -30,8 +31,6 @@ public class LayoutPanel extends BasePanel {
 		GridBagLayout gbl_general = new GridBagLayout();
 		gbl_general.columnWidths = new int[] { 46, 0, 0, 0, 0 };
 		gbl_general.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
-		gbl_general.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_general.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gbl_general);
 
 		JLabel lblStripes = new JLabel("Stripes");
@@ -55,25 +54,22 @@ public class LayoutPanel extends BasePanel {
 
 		tf_height = new JTextField();
 		addTextFieldAt(3, 1, "Height", tf_height);
-
+		
+		tf_pitch = new JTextField();
+		addTextFieldAt(1, 3, "Pitch", tf_pitch);
+		
 		JLabel lblPaddingHeader = new JLabel("Padding");
 		GridBagConstraints gbc_lblPaddingHeader = new GridBagConstraints();
 		gbc_lblPaddingHeader.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPaddingHeader.gridx = 0;
-		gbc_lblPaddingHeader.gridy = 3;
+		gbc_lblPaddingHeader.gridy = 4;
 		add(lblPaddingHeader, gbc_lblPaddingHeader);
 
 		tf_pleft = new JTextField();
-		addTextFieldAt(1, 4, "Left", tf_pleft);
+		addTextFieldAt(1, 5, "Left", tf_pleft);
 
 		tf_pright = new JTextField();
-		addTextFieldAt(3, 4, "Right", tf_pright);
-
-		tf_ptop = new JTextField();
-		addTextFieldAt(1, 5, "Top", tf_ptop);
-
-		tf_pbottom = new JTextField();
-		addTextFieldAt(3, 5, "Bottom", tf_pbottom);
+		addTextFieldAt(3, 5, "Right", tf_pright);
 
 		JLabel lblMarginHeader = new JLabel("Margin");
 		GridBagConstraints gbc_lblMarginHeader = new GridBagConstraints();
@@ -100,10 +96,10 @@ public class LayoutPanel extends BasePanel {
 		tf_height.setText(first.height.toString());
 		tf_width.setText(first.width.toString());
 		
+		tf_pitch.setText(first.pitch.toString());
+		
 		tf_pleft.setText(first.paddingLeft.toString());
 		tf_pright.setText(first.paddingRight.toString());
-		tf_ptop.setText(first.paddingTop.toString());
-		tf_pbottom.setText(first.paddingBottom.toString());
 
 		tf_mleft.setText(next.marginLeft.toString());
 		tf_mright.setText(next.marginRight.toString());
@@ -122,10 +118,10 @@ public class LayoutPanel extends BasePanel {
 		s.height = tryConvert(tf_height);
 		s.width = tryConvert(tf_width);
 		
+		s.pitch = tryConvert(tf_pitch);
+		
 		s.paddingLeft = tryConvert(tf_pleft);
 		s.paddingRight = tryConvert(tf_pright);
-		s.paddingTop = tryConvert(tf_ptop);
-		s.paddingBottom = tryConvert(tf_pbottom);
 		
 		s.marginLeft = tryConvert(tf_mleft);
 		s.marginRight = tryConvert(tf_mright);

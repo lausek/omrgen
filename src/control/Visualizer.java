@@ -38,7 +38,7 @@ public class Visualizer {
 			g.setColor(codeInfoSet.foreground);
 			for (int i = 0; i < codeInfoSet.stripes.length; i++) {
 				CodeStripe s = codeInfoSet.stripes[i];
-				g.fillRect(offx + s.paddingLeft.geti(Unit.pixel), offy + s.paddingTop.geti(Unit.pixel), s.width.geti(Unit.pixel), s.height.geti(Unit.pixel));
+				g.fillRect(offx + s.paddingLeft.geti(Unit.pixel), offy, s.width.geti(Unit.pixel), s.height.geti(Unit.pixel));
 
 				offy += s.getHeight().geti(Unit.pixel);
 			}

@@ -35,7 +35,8 @@ public class CodeInfoSet implements Serializable {
 		Size total = marginTop.add(marginBottom);
 		if (0 < stripes.length) {
 			CodeStripe s = stripes[0];
-			total = total.add(new Size(s.getHeight().get() * stripes.length));
+			// -1 = last pitch shouldn't be added
+			total = total.add(new Size(s.getHeight().get() * (stripes.length-1)));
 		}
 		return total;
 	}
