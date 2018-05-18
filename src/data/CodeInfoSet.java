@@ -3,12 +3,12 @@ package data;
 import java.awt.Color;
 
 public class CodeInfoSet {
-
+	
 	public static final Color FOREGROUND = Color.BLACK;
 	public static final Color BACKGROUND = Color.WHITE;
 	
 	public CodeStripe[] stripes;
-	public int marginLeft, marginRight, marginTop, marginBottom;
+	public Size marginLeft, marginRight, marginTop, marginBottom;
 	public Color foreground = FOREGROUND, background = BACKGROUND;
 	
 	public boolean equals(Object o) {
@@ -19,20 +19,20 @@ public class CodeInfoSet {
 		return this.hashCode() == c.hashCode();
 	}
 
-	public int getWidth() {
-		int total = marginLeft + marginRight;
+	public Size getWidth() {
+		Size total = marginLeft.add(marginRight);
 		if (0 < stripes.length) {
 			CodeStripe s = stripes[0];
-			total += s.getWidth();
+			total = total.add(s.getWidth());
 		}
 		return total;
 	}
 
-	public int getHeight() {
-		int total = marginTop + marginBottom;
+	public Size getHeight() {
+		Size total = marginTop.add(marginBottom);
 		if (0 < stripes.length) {
 			CodeStripe s = stripes[0];
-			total += s.getHeight() * stripes.length;
+			total = total.add(new Size(s.getHeight().get() * stripes.length));
 		}
 		return total;
 	}

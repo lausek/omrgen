@@ -48,7 +48,7 @@ public class EditHandler extends BaseHandler {
 		if (evt.getSource() instanceof JTextField) {
 			JTextField t = (JTextField) evt.getSource();
 			try {
-				Integer.parseInt(t.getText());
+				Float.parseFloat(t.getText());
 				revalidate();
 			} catch (NumberFormatException e) {
 				t.setText("0");

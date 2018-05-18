@@ -2,21 +2,21 @@ package data;
 
 public class CodeStripe {
 	
-	public int width, height;
-	public int paddingLeft, paddingRight, paddingTop, paddingBottom;
+	public Size width, height;
+	public Size paddingLeft, paddingRight, paddingTop, paddingBottom;
 	public boolean active;
 	
-	public CodeStripe(int width, int height) {
+	public CodeStripe(Size width, Size height) {
 		this.width = width;
 		this.height = height;
 	}
 	
-	public int getWidth() {
-		return paddingLeft + paddingRight + width;
+	public Size getWidth() {
+		return paddingLeft.add(paddingRight).add(width);
 	}
 	
-	public int getHeight() {
-		return paddingTop + paddingBottom + height;
+	public Size getHeight() {
+		return paddingTop.add(paddingBottom).add(height);
 	}
 	
 }
