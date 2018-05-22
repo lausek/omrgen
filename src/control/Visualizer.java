@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 import data.CodeInfoSet;
 import data.CodeStripe;
-import data.Size;
 import data.Size.Unit;
 
 public class Visualizer {
@@ -40,7 +39,7 @@ public class Visualizer {
 				CodeStripe s = codeInfoSet.stripes[i];
 				g.fillRect(offx + s.paddingLeft.geti(Unit.pixel), offy, s.width.geti(Unit.pixel), s.height.geti(Unit.pixel));
 
-				offy += s.getHeight().geti(Unit.pixel);
+				offy += s.height.add(s.pitch).geti(Unit.pixel);
 			}
 		}
 

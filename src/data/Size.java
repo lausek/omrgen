@@ -40,7 +40,7 @@ public class Size implements Serializable {
 	}
 	
 	public int geti(Unit u) {
-		return (int) get(u);
+		return (int) Math.round(get(u));
 	}
 	
 	public float set() {

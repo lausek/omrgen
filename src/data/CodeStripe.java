@@ -8,7 +8,7 @@ public class CodeStripe implements Serializable {
 	
 	public Size width, height;
 	public Size pitch;
-	public Size paddingLeft, paddingRight; //, paddingTop, paddingBottom;
+	public Size paddingLeft, paddingRight;
 	public boolean active;
 	
 	public CodeStripe(Size width, Size height) {
@@ -21,7 +21,7 @@ public class CodeStripe implements Serializable {
 	}
 	
 	public Size getHeight() {
-		return height.add(pitch);
+		return height;
 	}
 	
 }
