@@ -53,7 +53,12 @@ public class EditPanel extends BasePanel {
 		tabbedPane.addTab("Color", colorPanel);
 		tabbedPane.addTab("Pages", pagePanel);
 	}
-
+	
+	public void setInfoSet(CodeInfoSet next) {
+		layoutPanel.setInfoSet(next);
+		colorPanel.setInfoSet(next);
+	}
+	
 	public CodeInfoSet getInfoSet() {
 		CodeInfoSet c = new CodeInfoSet();
 		
@@ -71,10 +76,9 @@ public class EditPanel extends BasePanel {
 		for (int i = 0; i < layout.stripes; i++) {
 			c.stripes[i] = new CodeStripe(layout.width, layout.height);
 
+			c.stripes[i].pitch = layout.pitch;
 			c.stripes[i].paddingLeft = layout.paddingLeft;
 			c.stripes[i].paddingRight = layout.paddingRight;
-			c.stripes[i].paddingTop = layout.paddingTop;
-			c.stripes[i].paddingBottom = layout.paddingBottom;
 		}
 
 		return c;

@@ -2,6 +2,12 @@ package control.handler;
 
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -29,7 +35,32 @@ public class EditHandler extends BaseHandler {
 
 		editPanel.setPreview(standardPreview);
 	}
-
+	
+	public boolean loadState(File fp) {
+		try (FileInputStream stream = new FileInputStream(fp)) {	
+			try (ObjectInputStream ostream = new ObjectInputStream(stream)) {
+				CodeInfoSet loaded = (CodeInfoSet) ostream.readObject();
+				editPanel.setInfoSet(loaded);
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean saveState(File fp) {
+		try (FileOutputStream stream = new FileOutputStream(fp)) {	
+			try (ObjectOutputStream istream = new ObjectOutputStream(stream)) {
+				istream.writeObject(lastInfoSet);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	private void revalidate() {
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
@@ -48,7 +79,7 @@ public class EditHandler extends BaseHandler {
 		if (evt.getSource() instanceof JTextField) {
 			JTextField t = (JTextField) evt.getSource();
 			try {
-				Integer.parseInt(t.getText());
+				Float.parseFloat(t.getText());
 				revalidate();
 			} catch (NumberFormatException e) {
 				t.setText("0");
