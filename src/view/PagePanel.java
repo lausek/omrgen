@@ -9,6 +9,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 
 import control.handler.BaseHandler;
 import data.PageNode;
@@ -43,6 +44,7 @@ public class PagePanel extends BasePanel implements ListCellRenderer<PageNode> {
 
 		lsPages = new JList<>();
 		lsPages.setModel(model);
+		lsPages.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		lsPages.setCellRenderer(this);
 		add(lsPages, BorderLayout.CENTER);
 	}
