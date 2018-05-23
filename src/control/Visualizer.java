@@ -50,7 +50,7 @@ public class Visualizer {
 	}
 	
 	public static BufferedImage toImage(CodeInfoSet codeInfoSet) throws LayoutException {
-		return codeInfoSet.selected != null ? toImage(codeInfoSet, codeInfoSet.selected) : toImage(codeInfoSet, null);
+		return codeInfoSet.selected != null ? toImage(codeInfoSet, codeInfoSet.actives.get(codeInfoSet.selected)) : toImage(codeInfoSet, null);
 	}
 
 	// TODO: add throws

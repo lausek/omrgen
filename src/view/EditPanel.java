@@ -28,8 +28,8 @@ public class EditPanel extends BasePanel {
 
 	public PagePanel pagePanel;
 	public CodePanel codePanel;
-
-	private LayoutPanel layoutPanel;
+	public LayoutPanel layoutPanel;
+	
 	private ColorPanel colorPanel;
 
 	private JScrollPane scrollPane;
@@ -87,9 +87,11 @@ public class EditPanel extends BasePanel {
 		while (pages.hasMoreElements()) {
 			c.actives.add(pages.nextElement().actives);
 		}
-
-		if (pagePanel.lsPages.getSelectedValue() != null) {
-			c.selected = pagePanel.lsPages.getSelectedValue().actives;
+		
+		if (0 <= pagePanel.lsPages.getSelectedIndex()) {
+			c.selected = pagePanel.lsPages.getSelectedIndex();
+		} else {
+			c.selected = null;
 		}
 
 		c.foreground = colorPanel.getForegroundColor();

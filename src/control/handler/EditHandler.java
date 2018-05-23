@@ -66,14 +66,14 @@ public class EditHandler extends BaseHandler {
 			return;
 		}
 
+		editPanel.pagePanel.adjustAll((int)editPanel.layoutPanel.sp_stripes.getValue());
+		
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
 			try {
 				standardPreview = Visualizer.toImage(next);
 				editPanel.setPreview(standardPreview);
 				lastInfoSet = next;
-				
-				editPanel.pagePanel.adjustAll(lastInfoSet.stripes.length);
 			} catch (LayoutException e) {
 				editPanel.displayMessage(MessageType.ERROR, e.getMessage());
 			}

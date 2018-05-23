@@ -13,7 +13,7 @@ public class CodeInfoSet implements Serializable {
 
 	public CodeStripe[] stripes;
 	public List<boolean[]> actives;
-	public boolean[] selected;
+	public Integer selected;
 	public Size marginLeft, marginRight, marginTop, marginBottom;
 	public Color foreground = FOREGROUND, background = BACKGROUND;
 
