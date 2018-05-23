@@ -64,7 +64,7 @@ public class View extends JFrame implements ActionListener {
 
 	private void setHandlerPanel(BaseHandler handler) {
 		currentHandler = handler;
-		setContentPane(handler.getViewPanel());
+		setContentPane(handler.getPanel());
 		revalidate();
 		repaint();
 	}
@@ -75,7 +75,7 @@ public class View extends JFrame implements ActionListener {
 			return;
 		}
 
-		if (currentHandler != null && currentHandler.getViewPanel() != null) {
+		if (currentHandler != null && currentHandler.getPanel() != null) {
 			if (!currentHandler.close()) {
 				return;
 			}

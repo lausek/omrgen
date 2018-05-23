@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
-import control.InputListener;
+import control.handler.BaseHandler;
 import data.LayoutInfoSet;
 
 public class LayoutPanel extends BasePanel {
@@ -22,7 +22,7 @@ public class LayoutPanel extends BasePanel {
 	// margin
 	private JTextField tf_mleft, tf_mright, tf_mtop, tf_mbottom;
 	
-	public LayoutPanel(InputListener listener) {
+	public LayoutPanel(BaseHandler listener) {
 		super(listener);
 		
 		GridBagLayout gbl_general = new GridBagLayout();

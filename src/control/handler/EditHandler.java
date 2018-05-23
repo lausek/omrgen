@@ -80,7 +80,7 @@ public class EditHandler extends BaseHandler {
 	}
 
 	@Override
-	public BasePanel getViewPanel() {
+	public BasePanel getPanel() {
 		return this.editPanel;
 	}
 
@@ -102,6 +102,12 @@ public class EditHandler extends BaseHandler {
 	@Override
 	public boolean isValidNumber() {
 		return false;
+	}
+
+	@Override
+	public void setPanel(BasePanel panel) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

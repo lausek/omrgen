@@ -7,7 +7,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import control.InputListener;
+import control.handler.BaseHandler;
+import control.handler.PageHandler;
 import data.CodeInfoSet;
 import data.CodeStripe;
 import data.LayoutInfoSet;
@@ -28,13 +29,13 @@ public class EditPanel extends BasePanel {
 	private JScrollPane scrollPane;
 	private JLabel preview;
 
-	public EditPanel(InputListener listener) {
+	public EditPanel(BaseHandler listener) {
 		super(listener);
 		setLayout(new BorderLayout(0, 0));
 		
 		layoutPanel = new LayoutPanel(listener);
-		pagePanel = new PagePanel(listener);
 		colorPanel = new ColorPanel(listener);
+		pagePanel = new PagePanel(new PageHandler());
 		
 		JSplitPane splitPane = new JSplitPane();		
 		JTabbedPane tabbedPane = new JTabbedPane();
