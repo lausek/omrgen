@@ -12,6 +12,7 @@ import control.handler.PageHandler;
 import data.CodeInfoSet;
 import data.CodeStripe;
 import data.LayoutInfoSet;
+import data.PageNode;
 
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
@@ -19,15 +20,17 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JTabbedPane;
 
 import java.awt.Image;
+import java.util.Enumeration;
 
 public class EditPanel extends BasePanel {
 
 	private static final long serialVersionUID = 1L;
 
+	public PagePanel pagePanel;
+	public CodePanel codePanel;
+
 	private LayoutPanel layoutPanel;
-	private PagePanel pagePanel;
 	private ColorPanel colorPanel;
-	private CodePanel codePanel;
 
 	private JScrollPane scrollPane;
 	private JLabel preview;
@@ -38,9 +41,10 @@ public class EditPanel extends BasePanel {
 
 		layoutPanel = new LayoutPanel(listener);
 		colorPanel = new ColorPanel(listener);
-		pagePanel = new PagePanel(new PageHandler());
-		
-		JSplitPane splitPane = new JSplitPane();		
+		pagePanel = new PagePanel(new PageHandler(), this);
+		codePanel = new CodePanel(listener, this);
+
+		JSplitPane splitPane = new JSplitPane();
 		JTabbedPane tabbedPane = new JTabbedPane();
 		add(splitPane);
 
@@ -61,7 +65,9 @@ public class EditPanel extends BasePanel {
 		tabbedPane.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				((BasePanel) tabbedPane.getSelectedComponent()).open();
+				if (!((BasePanel) tabbedPane.getSelectedComponent()).open()) {
+					System.out.println("Also von mir aus nich...");
+				}
 			}
 		});
 	}
@@ -75,6 +81,16 @@ public class EditPanel extends BasePanel {
 		CodeInfoSet c = new CodeInfoSet();
 
 		LayoutInfoSet layout = layoutPanel.getInfoSet();
+
+		c.actives.clear();
+		Enumeration<PageNode> pages = pagePanel.model.elements();
+		while (pages.hasMoreElements()) {
+			c.actives.add(pages.nextElement().actives);
+		}
+
+		if (pagePanel.lsPages.getSelectedValue() != null) {
+			c.selected = pagePanel.lsPages.getSelectedValue().actives;
+		}
 
 		c.foreground = colorPanel.getForegroundColor();
 		c.background = colorPanel.getBackgroundColor();

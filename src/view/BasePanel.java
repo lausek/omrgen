@@ -23,12 +23,18 @@ public class BasePanel extends JPanel {
 	}
 	
 	protected BaseHandler handler;
+	protected EditPanel parent;
 	
 	private static final long serialVersionUID = 1L;
 	
-	public BasePanel(BaseHandler listener) {
+	public BasePanel(BaseHandler listener, EditPanel parent) {
 		this.handler = listener;
+		this.parent = parent;
 		this.handler.setPanel(this);
+	}
+	
+	public BasePanel(BaseHandler listener) {
+		this(listener, null);
 	}
 	
 	public boolean open() {

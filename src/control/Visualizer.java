@@ -12,8 +12,8 @@ import data.CodeStripe;
 import data.Size.Unit;
 
 public class Visualizer {
-
-	public static BufferedImage toImage(CodeInfoSet codeInfoSet) throws LayoutException {
+	
+	public static BufferedImage toImage(CodeInfoSet codeInfoSet, boolean[] actives) throws LayoutException {
 		int w = codeInfoSet.getWidth().geti(Unit.pixel);
 		int h = codeInfoSet.getHeight().geti(Unit.pixel);
 
@@ -37,13 +37,20 @@ public class Visualizer {
 			g.setColor(codeInfoSet.foreground);
 			for (int i = 0; i < codeInfoSet.stripes.length; i++) {
 				CodeStripe s = codeInfoSet.stripes[i];
-				g.fillRect(offx + s.paddingLeft.geti(Unit.pixel), offy, s.width.geti(Unit.pixel), s.height.geti(Unit.pixel));
+				
+				if(actives == null || actives[i]) {
+					g.fillRect(offx + s.paddingLeft.geti(Unit.pixel), offy, s.width.geti(Unit.pixel), s.height.geti(Unit.pixel));
+				}
 
 				offy += s.height.add(s.pitch).geti(Unit.pixel);
 			}
 		}
 
 		return b;
+	}
+	
+	public static BufferedImage toImage(CodeInfoSet codeInfoSet) throws LayoutException {
+		return codeInfoSet.selected != null ? toImage(codeInfoSet, codeInfoSet.selected) : toImage(codeInfoSet, null);
 	}
 
 	// TODO: add throws

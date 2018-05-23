@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.event.ChangeEvent;
 
+import data.PageNode;
 import view.BasePanel;
 import view.PagePanel;
 
@@ -19,7 +20,7 @@ public class PageHandler extends BaseHandler {
 	@Override
 	public void changeEvent() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -30,13 +31,19 @@ public class PageHandler extends BaseHandler {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getSource() == panel.btnAdd) {
+			panel.model.addElement(new PageNode("Page "+panel.model.getSize()));
+		} else if (e.getSource() == panel.btnRemove) {
+			int[] indices = panel.lsPages.getSelectedIndices();
+			// process in reverse
+			for (int i = indices.length-1; 0 <= i; i--) {
+				panel.model.remove(indices[i]);
+			}
+		}
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

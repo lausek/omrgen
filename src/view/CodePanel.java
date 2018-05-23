@@ -1,41 +1,74 @@
 package view;
 
-import control.InputListener;
 import control.handler.BaseHandler;
+import data.PageNode;
 
-import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 
-public class CodePanel extends BasePanel {
+public class CodePanel extends BasePanel implements ActionListener {
 
 	private static final long serialVersionUID = -9071790078803808293L;
 
-	private JList<JCheckBox> lsStripes;
 	private JTextField tfError;
+	private PageNode selectedPage;
+	private JPanel mainPanel;
 
-	public CodePanel(BaseHandler listener) {
-		super(listener);
+	public CodePanel(BaseHandler listener, EditPanel parent) {
+		super(listener, parent);
 
-		tfError = new JTextField("Please select one node.");
+		tfError = new JTextField("Please select just one page.");
 
-		lsStripes = new JList<>();
-		add(lsStripes);
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		add(mainPanel);
 	}
 
-	public void load(boolean[] actives) {
-		tfError.setVisible(0 == actives.length);
-		if (0 < actives.length) {
-			// TODO: refill lsStripes
-			JCheckBox[] listData = new JCheckBox[actives.length];
-			for (int i = 0; i < actives.length; i++) {
-				listData[i] = new JCheckBox("Stripe " + i);
-				listData[i].setSelected(actives[i]);
+	@Override
+	public boolean open() {
+		int[] selected = parent.pagePanel.lsPages.getSelectedIndices();
+		boolean allow = selected.length == 1;
+
+		tfError.setVisible(!allow);
+
+		if (allow) {
+			selectedPage = parent.pagePanel.model.get(selected[0]);
+
+			if (selectedPage.actives == null) {
+				selectedPage.adjust(parent.getInfoSet().stripes.length);
 			}
-			lsStripes.setListData(listData);
-			lsStripes.setVisible(true);
+
+			mainPanel.removeAll();
+			for (int i = 0; i < selectedPage.actives.length; i++) {
+				JCheckBox next = new JCheckBox("Stripe " + (i + 1));
+				next.setSelected(selectedPage.actives[i]);
+				next.addActionListener(this);
+				mainPanel.add(next);
+			}
+		} else {
+			selectedPage = null;
+		}
+
+		return allow;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (selectedPage != null) {
+			Component[] children = mainPanel.getComponents();
+			for (int i = 0; i < children.length; i++) {
+				if(children[i] == e.getSource()) {
+					selectedPage.actives[i] = ((JCheckBox) e.getSource()).isSelected();
+					parent.revalidate();
+				}
+			}
 		}
 	}
-
 }
