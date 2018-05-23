@@ -11,6 +11,8 @@ import javax.swing.SwingConstants;
 
 import control.handler.BaseHandler;
 
+import data.Size;
+
 public class BasePanel extends JPanel {
 	
 	public enum MessageType {
@@ -37,11 +39,11 @@ public class BasePanel extends JPanel {
 		return true;
 	}
 	
-	protected static int tryConvert(JTextField textField) {
+	protected static Size tryConvert(JTextField textField) {
 		try {
-			return Integer.parseInt(textField.getText());
+			return new Size(Float.parseFloat(textField.getText()));
 		} catch (NumberFormatException e) {
-			return 0;
+			return new Size(0);
 		}
 	}
 	

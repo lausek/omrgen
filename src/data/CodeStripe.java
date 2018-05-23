@@ -1,22 +1,27 @@
 package data;
 
-public class CodeStripe {
+import java.io.Serializable;
+
+public class CodeStripe implements Serializable {
 	
-	public int width, height;
-	public int paddingLeft, paddingRight, paddingTop, paddingBottom;
+	private static final long serialVersionUID = 8915768258051523330L;
+	
+	public Size width, height;
+	public Size pitch;
+	public Size paddingLeft, paddingRight;
 	public boolean active;
 	
-	public CodeStripe(int width, int height) {
+	public CodeStripe(Size width, Size height) {
 		this.width = width;
 		this.height = height;
 	}
 	
-	public int getWidth() {
-		return paddingLeft + paddingRight + width;
+	public Size getWidth() {
+		return paddingLeft.add(paddingRight).add(width);
 	}
 	
-	public int getHeight() {
-		return paddingTop + paddingBottom + height;
+	public Size getHeight() {
+		return height;
 	}
 	
 }

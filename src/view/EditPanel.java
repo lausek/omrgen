@@ -14,6 +14,8 @@ import data.CodeStripe;
 import data.LayoutInfoSet;
 
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JTabbedPane;
 
 import java.awt.Image;
@@ -25,14 +27,15 @@ public class EditPanel extends BasePanel {
 	private LayoutPanel layoutPanel;
 	private PagePanel pagePanel;
 	private ColorPanel colorPanel;
-	
+	private CodePanel codePanel;
+
 	private JScrollPane scrollPane;
 	private JLabel preview;
 
 	public EditPanel(BaseHandler listener) {
 		super(listener);
 		setLayout(new BorderLayout(0, 0));
-		
+
 		layoutPanel = new LayoutPanel(listener);
 		colorPanel = new ColorPanel(listener);
 		pagePanel = new PagePanel(new PageHandler());
@@ -48,18 +51,31 @@ public class EditPanel extends BasePanel {
 
 		preview = new JLabel("");
 		scrollPane.setViewportView(preview);
-		
+
 		splitPane.setLeftComponent(tabbedPane);
 		tabbedPane.addTab("Layout", layoutPanel);
 		tabbedPane.addTab("Color", colorPanel);
 		tabbedPane.addTab("Pages", pagePanel);
+		tabbedPane.addTab("Code", codePanel);
+
+		tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				((BasePanel) tabbedPane.getSelectedComponent()).open();
+			}
+		});
+	}
+
+	public void setInfoSet(CodeInfoSet next) {
+		layoutPanel.setInfoSet(next);
+		colorPanel.setInfoSet(next);
 	}
 
 	public CodeInfoSet getInfoSet() {
 		CodeInfoSet c = new CodeInfoSet();
-		
+
 		LayoutInfoSet layout = layoutPanel.getInfoSet();
-		
+
 		c.foreground = colorPanel.getForegroundColor();
 		c.background = colorPanel.getBackgroundColor();
 
@@ -72,10 +88,9 @@ public class EditPanel extends BasePanel {
 		for (int i = 0; i < layout.stripes; i++) {
 			c.stripes[i] = new CodeStripe(layout.width, layout.height);
 
+			c.stripes[i].pitch = layout.pitch;
 			c.stripes[i].paddingLeft = layout.paddingLeft;
 			c.stripes[i].paddingRight = layout.paddingRight;
-			c.stripes[i].paddingTop = layout.paddingTop;
-			c.stripes[i].paddingBottom = layout.paddingBottom;
 		}
 
 		return c;

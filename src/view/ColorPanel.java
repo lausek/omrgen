@@ -73,6 +73,11 @@ public class ColorPanel extends BasePanel implements ActionListener {
 		
 	}
 	
+	public void setInfoSet(CodeInfoSet next) {
+		tf_foreground.setText("" + next.foreground.getRGB());
+		tf_background.setText("" + next.background.getRGB());
+	}
+	
 	public void resetColors() {
 		setColors(null, null);
 	}
