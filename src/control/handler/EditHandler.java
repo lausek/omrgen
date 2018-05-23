@@ -35,9 +35,9 @@ public class EditHandler extends BaseHandler {
 
 		editPanel.setPreview(standardPreview);
 	}
-	
+
 	public boolean loadState(File fp) {
-		try (FileInputStream stream = new FileInputStream(fp)) {	
+		try (FileInputStream stream = new FileInputStream(fp)) {
 			try (ObjectInputStream ostream = new ObjectInputStream(stream)) {
 				CodeInfoSet loaded = (CodeInfoSet) ostream.readObject();
 				editPanel.setInfoSet(loaded);
@@ -48,9 +48,9 @@ public class EditHandler extends BaseHandler {
 		}
 		return true;
 	}
-	
+
 	public boolean saveState(File fp) {
-		try (FileOutputStream stream = new FileOutputStream(fp)) {	
+		try (FileOutputStream stream = new FileOutputStream(fp)) {
 			try (ObjectOutputStream istream = new ObjectOutputStream(stream)) {
 				istream.writeObject(lastInfoSet);
 			}
@@ -60,8 +60,12 @@ public class EditHandler extends BaseHandler {
 		}
 		return true;
 	}
-	
+
 	private void revalidate() {
+		if (editPanel == null) {
+			return;
+		}
+
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
 			try {
@@ -102,7 +106,7 @@ public class EditHandler extends BaseHandler {
 			}
 		}
 	}
-	
+
 	@Override
 	public void stateChanged(ChangeEvent evt) {
 		if (evt.getSource() instanceof JSpinner) {

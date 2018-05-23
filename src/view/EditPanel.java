@@ -11,8 +11,11 @@ import control.InputListener;
 import data.CodeInfoSet;
 import data.CodeStripe;
 import data.LayoutInfoSet;
+import data.TreeNode;
 
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JTabbedPane;
 
 import java.awt.Image;
@@ -24,19 +27,41 @@ public class EditPanel extends BasePanel {
 	private LayoutPanel layoutPanel;
 	private PagePanel pagePanel;
 	private ColorPanel colorPanel;
-	
+	private CodePanel codePanel;
+
 	private JScrollPane scrollPane;
 	private JLabel preview;
 
 	public EditPanel(InputListener listener) {
 		super(listener);
 		setLayout(new BorderLayout(0, 0));
-		
+
 		layoutPanel = new LayoutPanel(listener);
-		pagePanel = new PagePanel(listener);
 		colorPanel = new ColorPanel(listener);
-		
-		JSplitPane splitPane = new JSplitPane();		
+		pagePanel = new PagePanel(listener) {
+			private static final long serialVersionUID = -4933162665298924098L;
+
+			@Override
+			public boolean open() {
+				this.realloc(10);
+				return super.open();
+			}
+		};
+		codePanel = new CodePanel(listener) {
+			private static final long serialVersionUID = -4933162665298924098L;
+
+			@Override
+			public boolean open() {
+				TreeNode current = pagePanel.getCurrent();
+				// TODO: and node is no directory
+				if (current != null) {
+					this.load(current.active);
+				}
+				return super.open();
+			}
+		};
+
+		JSplitPane splitPane = new JSplitPane();
 		JTabbedPane tabbedPane = new JTabbedPane();
 		add(splitPane);
 
@@ -47,23 +72,31 @@ public class EditPanel extends BasePanel {
 
 		preview = new JLabel("");
 		scrollPane.setViewportView(preview);
-		
+
 		splitPane.setLeftComponent(tabbedPane);
 		tabbedPane.addTab("Layout", layoutPanel);
 		tabbedPane.addTab("Color", colorPanel);
 		tabbedPane.addTab("Pages", pagePanel);
+		tabbedPane.addTab("Code", codePanel);
+
+		tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				((BasePanel) tabbedPane.getSelectedComponent()).open();
+			}
+		});
 	}
-	
+
 	public void setInfoSet(CodeInfoSet next) {
 		layoutPanel.setInfoSet(next);
 		colorPanel.setInfoSet(next);
 	}
-	
+
 	public CodeInfoSet getInfoSet() {
 		CodeInfoSet c = new CodeInfoSet();
-		
+
 		LayoutInfoSet layout = layoutPanel.getInfoSet();
-		
+
 		c.foreground = colorPanel.getForegroundColor();
 		c.background = colorPanel.getBackgroundColor();
 

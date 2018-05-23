@@ -60,10 +60,27 @@ public class PagePanel extends BasePanel implements InputListener, TreeSelection
 		return current;
 	}
 
+	public void realloc(int amount) {
+		realloc(root, amount);
+	}
+
+	public void realloc(DefaultMutableTreeNode parent, int amount) {
+		int count = parent.getChildCount();
+		for (int i = 0; i < count; i++) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) parent.getChildAt(i);
+			if (node instanceof TreeNode) {
+				((TreeNode) node).active = new boolean[amount];
+			}
+			if (0 < node.getChildCount()) {
+				realloc(node, amount);
+			}
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		TreePath[] paths = tree.getSelectionPaths();
-		
+
 		if (arg0.getSource() == btnAdd) {
 			if (paths != null) {
 				for (TreePath path : paths) {
@@ -102,7 +119,11 @@ public class PagePanel extends BasePanel implements InputListener, TreeSelection
 
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
-
+		try {
+			current = (TreeNode) e.getNewLeadSelectionPath().getLastPathComponent();
+		} catch (Exception err) {
+			current = null;
+		}
 	}
 
 }

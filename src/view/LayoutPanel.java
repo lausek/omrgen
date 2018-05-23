@@ -89,6 +89,12 @@ public class LayoutPanel extends BasePanel {
 
 		tf_mbottom = new JTextField();
 		addTextFieldAt(3, 9, "Bottom", tf_mbottom);
+		
+		// TODO: remove default values
+		tf_width.setText("10");
+		tf_height.setText("0.3");
+		tf_pitch.setText("2.54");
+		sp_stripes.setValue(10);
 	}
 	
 	public void setInfoSet(CodeInfoSet next) {

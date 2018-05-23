@@ -6,6 +6,6 @@ public class TreeNode extends DefaultMutableTreeNode {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private CodeInfoSet infoSet;
+	public boolean[] active;
 	
 }
