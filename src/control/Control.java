@@ -3,6 +3,7 @@ package control;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 
 import control.handler.EditHandler;
@@ -23,13 +24,13 @@ public class Control {
 		}
 
 		view = new View(this);
-		editHandler = new EditHandler();
+		editHandler = new EditHandler(this);
 
 		view.switchTo(editHandler);
 
 		view.setVisible(true);
 	}
-	
+
 	public boolean exitApplication() {
 		if (view.close()) {
 			view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
@@ -39,10 +40,27 @@ public class Control {
 	}
 
 	public boolean loadState(File fp) {
+		if (!editHandler.close()) {
+			return false;
+		}
+		
+		if (fp == null) {
+			JFileChooser chooser = new JFileChooser();
+			if (chooser.showOpenDialog(view) == JFileChooser.APPROVE_OPTION) {
+				fp = chooser.getSelectedFile();
+			}
+		}
+		
 		return editHandler.loadState(fp);
 	}
 
 	public boolean saveState(File fp) {
+		if (fp == null) {
+			JFileChooser chooser = new JFileChooser();
+			if (chooser.showSaveDialog(view) == JFileChooser.APPROVE_OPTION) {
+				fp = chooser.getSelectedFile();
+			}
+		}
 		return editHandler.saveState(fp);
 	}
 

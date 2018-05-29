@@ -11,10 +11,12 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
+import control.Control;
 import control.LayoutException;
 import control.Visualizer;
 import data.CodeInfoSet;
@@ -24,11 +26,14 @@ import view.EditPanel;
 
 public class EditHandler extends BaseHandler {
 
+	private Control control;
 	private EditPanel editPanel;
 	private CodeInfoSet lastInfoSet;
 	private BufferedImage standardPreview;
+	private int lastSerialized = 0;
 
-	public EditHandler() {
+	public EditHandler(Control control) {
+		this.control = control;
 		this.editPanel = new EditPanel(this);
 
 		standardPreview = new BufferedImage(100, 200, BufferedImage.TYPE_INT_ARGB);
@@ -50,9 +55,11 @@ public class EditHandler extends BaseHandler {
 	}
 
 	public boolean saveState(File fp) {
+		revalidatePreview();
 		try (FileOutputStream stream = new FileOutputStream(fp)) {
 			try (ObjectOutputStream istream = new ObjectOutputStream(stream)) {
 				istream.writeObject(lastInfoSet);
+				lastSerialized = lastInfoSet.hashCode();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -66,8 +73,8 @@ public class EditHandler extends BaseHandler {
 			return;
 		}
 
-		editPanel.pagePanel.adjustAll((int)editPanel.layoutPanel.sp_stripes.getValue());
-		
+		editPanel.pagePanel.adjustAll((int) editPanel.layoutPanel.sp_stripes.getValue());
+
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
 			try {
@@ -128,7 +135,20 @@ public class EditHandler extends BaseHandler {
 
 	@Override
 	public boolean close() {
-		return editPanel.close();
+		if (!editPanel.close()) {
+			return false;
+		}
+
+		if (lastInfoSet == null || lastSerialized != lastInfoSet.hashCode()) {
+			int confirm = JOptionPane.showConfirmDialog(editPanel, "There are unsaved changes. Do you want to save?");
+			if (confirm == JOptionPane.OK_OPTION) {
+				if (!control.saveState(null)) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	@Override
@@ -143,7 +163,7 @@ public class EditHandler extends BaseHandler {
 
 	@Override
 	public void setPanel(BasePanel panel) {
-		
+
 	}
 
 }
