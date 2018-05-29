@@ -61,7 +61,7 @@ public class EditHandler extends BaseHandler {
 		return true;
 	}
 
-	private void revalidate() {
+	public void revalidatePreview() {
 		if (editPanel == null) {
 			return;
 		}
@@ -86,7 +86,7 @@ public class EditHandler extends BaseHandler {
 			JTextField t = (JTextField) evt.getSource();
 			try {
 				Float.parseFloat(t.getText());
-				revalidate();
+				revalidatePreview();
 			} catch (NumberFormatException e) {
 				t.setText("0");
 			}
@@ -95,7 +95,7 @@ public class EditHandler extends BaseHandler {
 
 			// TODO: this is ugly
 			if (item.getText().equals("Export...")) {
-				revalidate();
+				revalidatePreview();
 
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -112,7 +112,7 @@ public class EditHandler extends BaseHandler {
 	@Override
 	public void stateChanged(ChangeEvent evt) {
 		if (evt.getSource() instanceof JSpinner) {
-			revalidate();
+			revalidatePreview();
 		}
 	}
 

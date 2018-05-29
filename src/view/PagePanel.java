@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import control.handler.BaseHandler;
 import data.PageNode;
@@ -45,13 +47,21 @@ public class PagePanel extends BasePanel implements ListCellRenderer<PageNode> {
 		lsPages = new JList<>();
 		lsPages.setModel(model);
 		lsPages.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		lsPages.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getValueIsAdjusting()) {
+					parent.revalidatePreview();
+				}
+			}
+		});
 		lsPages.setCellRenderer(this);
 		add(lsPages, BorderLayout.CENTER);
 	}
 
 	public void adjustAll(int size) {
 		Enumeration<PageNode> nodes = model.elements();
-		while(nodes.hasMoreElements()) {
+		while (nodes.hasMoreElements()) {
 			PageNode node = nodes.nextElement();
 			node.adjust(size);
 		}

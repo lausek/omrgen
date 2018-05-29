@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import control.handler.BaseHandler;
 import control.handler.PageHandler;
+import control.handler.EditHandler;
 import data.CodeInfoSet;
 import data.CodeStripe;
 import data.LayoutInfoSet;
@@ -70,6 +71,10 @@ public class EditPanel extends BasePanel {
 				}
 			}
 		});
+	}
+	
+	public void revalidatePreview() {
+		((EditHandler)handler).revalidatePreview();
 	}
 
 	public void setInfoSet(CodeInfoSet next) {

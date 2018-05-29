@@ -29,7 +29,7 @@ public class Control {
 
 		view.setVisible(true);
 	}
-
+	
 	public boolean exitApplication() {
 		if (view.close()) {
 			view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
