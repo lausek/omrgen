@@ -41,7 +41,7 @@ public class EditPanel extends BasePanel {
 		setLayout(new BorderLayout(0, 0));
 
 		layoutPanel = new LayoutPanel(listener);
-		colorPanel = new ColorPanel(listener);
+		colorPanel = new ColorPanel(listener, this);
 		pagePanel = new PagePanel(new PageHandler(), this);
 		codePanel = new CodePanel(listener, this);
 
@@ -81,6 +81,7 @@ public class EditPanel extends BasePanel {
 	public void setInfoSet(CodeInfoSet next) {
 		layoutPanel.setInfoSet(next);
 		colorPanel.setInfoSet(next);
+		pagePanel.setInfoSet(next);
 	}
 
 	public CodeInfoSet getInfoSet() {

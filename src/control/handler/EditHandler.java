@@ -143,7 +143,6 @@ public class EditHandler extends BaseHandler {
 
 	@Override
 	public void setPanel(BasePanel panel) {
-		// TODO Auto-generated method stub
 		
 	}
 

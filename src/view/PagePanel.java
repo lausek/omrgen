@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import control.handler.BaseHandler;
+import data.CodeInfoSet;
 import data.PageNode;
 
 import javax.swing.JList;
@@ -57,6 +58,29 @@ public class PagePanel extends BasePanel implements ListCellRenderer<PageNode> {
 		});
 		lsPages.setCellRenderer(this);
 		add(lsPages, BorderLayout.CENTER);
+	}
+
+	public PageNode addPage(int number) {
+		PageNode n = new PageNode("Page " + number);
+		model.addElement(n);
+		return n;
+	}
+
+	public void removePage(int index) {
+		model.removeElementAt(index);
+	}
+
+	public void removePage(int[] indices) {
+		// process in reverse
+		for (int i = indices.length - 1; 0 <= i; i--) {
+			removePage(indices[i]);
+		}
+	}
+
+	public void setInfoSet(CodeInfoSet next) {
+		for (boolean[] actives : next.actives) {
+			addPage(model.getSize() + 1).actives = actives;
+		}
 	}
 
 	public void adjustAll(int size) {
