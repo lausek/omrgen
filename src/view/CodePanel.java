@@ -64,9 +64,10 @@ public class CodePanel extends BasePanel implements ActionListener {
 		if (selectedPage != null) {
 			Component[] children = mainPanel.getComponents();
 			for (int i = 0; i < children.length; i++) {
-				if(children[i] == e.getSource()) {
+				if (children[i] == e.getSource()) {
 					selectedPage.actives[i] = ((JCheckBox) e.getSource()).isSelected();
-					parent.revalidate();
+					parent.revalidatePreview();
+					return;
 				}
 			}
 		}

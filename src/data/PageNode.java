@@ -18,6 +18,7 @@ public class PageNode extends JPanel {
 	public void adjust(int size) {
 		if(this.actives == null) {
 			this.actives = new boolean[size];
+			Arrays.fill(this.actives, true);
 		} else {
 			this.actives = Arrays.copyOf(actives, size);
 		}
