@@ -4,8 +4,10 @@ import control.handler.BaseHandler;
 import data.PageNode;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,12 +25,13 @@ public class CodePanel extends BasePanel implements ActionListener {
 
 	public CodePanel(BaseHandler listener, EditPanel parent) {
 		super(listener, parent);
-
+		setLayout(new BorderLayout());
+		
 		tfError = new JTextField("Please select just one page.");
 
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		add(mainPanel);
+		add(new JScrollPane(mainPanel), BorderLayout.CENTER);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -57,7 +58,7 @@ public class PagePanel extends BasePanel implements ListCellRenderer<PageNode> {
 			}
 		});
 		lsPages.setCellRenderer(this);
-		add(lsPages, BorderLayout.CENTER);
+		add(new JScrollPane(lsPages), BorderLayout.CENTER);
 	}
 
 	public PageNode addPage(int number) {
