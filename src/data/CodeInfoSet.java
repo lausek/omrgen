@@ -2,6 +2,7 @@ package data;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.List;
 
 public class CodeInfoSet implements Serializable {
 
@@ -11,9 +12,15 @@ public class CodeInfoSet implements Serializable {
 	public static final Color BACKGROUND = Color.WHITE;
 
 	public CodeStripe[] stripes;
+	public List<boolean[]> actives;
+	public Integer selected;
 	public Size marginLeft, marginRight, marginTop, marginBottom;
 	public Color foreground = FOREGROUND, background = BACKGROUND;
 
+	public CodeInfoSet() {
+		actives = new java.util.ArrayList<>();
+	}
+	
 	public boolean equals(Object o) {
 		if (!(o instanceof CodeInfoSet)) {
 			return false;

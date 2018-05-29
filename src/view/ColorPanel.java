@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JTextField;
 
-import control.InputListener;
+import control.handler.BaseHandler;
 import data.CodeInfoSet;
 
 public class ColorPanel extends BasePanel implements ActionListener {
@@ -23,8 +23,8 @@ public class ColorPanel extends BasePanel implements ActionListener {
 	private JButton btnColorFore, btnColorBack, btnReset;
 	private JTextField tf_foreground, tf_background;
 	
-	public ColorPanel(InputListener listener) {
-		super(listener);
+	public ColorPanel(BaseHandler listener, EditPanel parent) {
+		super(listener, parent);
 		
 		GridBagLayout gbl_colorPane = new GridBagLayout();
 		gbl_colorPane.columnWidths = new int[] { 0, 0, 0, 0 };
@@ -94,6 +94,8 @@ public class ColorPanel extends BasePanel implements ActionListener {
 		} else {
 			tf_background.setText("" + CodeInfoSet.BACKGROUND.getRGB());
 		}
+		
+		parent.revalidatePreview();
 	}
 	
 	Color getForegroundColor() {

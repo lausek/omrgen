@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import control.Control;
@@ -69,7 +68,7 @@ public class View extends JFrame implements ActionListener {
 
 	private void setHandlerPanel(BaseHandler handler) {
 		currentHandler = handler;
-		setContentPane(handler.getViewPanel());
+		setContentPane(handler.getPanel());
 		revalidate();
 		repaint();
 	}
@@ -80,7 +79,7 @@ public class View extends JFrame implements ActionListener {
 			return;
 		}
 
-		if (currentHandler != null && currentHandler.getViewPanel() != null) {
+		if (currentHandler != null && currentHandler.getPanel() != null) {
 			if (!currentHandler.close()) {
 				return;
 			}
@@ -98,16 +97,10 @@ public class View extends JFrame implements ActionListener {
 			return;
 		}
 
-		JFileChooser chooser = new JFileChooser();
-
 		if (arg0.getSource() == mntmOpen) {
-			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				control.loadState(chooser.getSelectedFile());
-			}
+			control.loadState(null);
 		} else if (arg0.getSource() == mntmSave) {
-			if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				control.saveState(chooser.getSelectedFile());
-			}
+			control.saveState(null);
 		} else if (arg0.getSource() == mntmExit) {
 			control.exitApplication();
 		} else {

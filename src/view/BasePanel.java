@@ -9,7 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import control.InputListener;
+import control.handler.BaseHandler;
+
 import data.Size;
 
 public class BasePanel extends JPanel {
@@ -21,12 +22,19 @@ public class BasePanel extends JPanel {
 		ERROR,
 	}
 	
-	protected InputListener listener;
+	protected BaseHandler handler;
+	protected EditPanel parent;
 	
 	private static final long serialVersionUID = 1L;
 	
-	public BasePanel(InputListener listener) {
-		this.listener = listener;
+	public BasePanel(BaseHandler listener, EditPanel parent) {
+		this.handler = listener;
+		this.parent = parent;
+		this.handler.setPanel(this);
+	}
+	
+	public BasePanel(BaseHandler listener) {
+		this(listener, null);
 	}
 	
 	public boolean open() {
@@ -61,7 +69,7 @@ public class BasePanel extends JPanel {
 		gbc_tf_cons.gridy = y;
 		this.add(tf, gbc_tf_cons);
 
-		tf.addActionListener(listener);
+		tf.addActionListener(handler);
 		tf.setHorizontalAlignment(SwingConstants.RIGHT);
 		tf.setColumns(6);
 		tf.setText("0");

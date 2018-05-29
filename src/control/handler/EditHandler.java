@@ -11,10 +11,12 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
+import control.Control;
 import control.LayoutException;
 import control.Visualizer;
 import data.CodeInfoSet;
@@ -24,20 +26,23 @@ import view.EditPanel;
 
 public class EditHandler extends BaseHandler {
 
+	private Control control;
 	private EditPanel editPanel;
 	private CodeInfoSet lastInfoSet;
 	private BufferedImage standardPreview;
+	private int lastSerialized = 0;
 
-	public EditHandler() {
+	public EditHandler(Control control) {
+		this.control = control;
 		this.editPanel = new EditPanel(this);
 
 		standardPreview = new BufferedImage(100, 200, BufferedImage.TYPE_INT_ARGB);
 
 		editPanel.setPreview(standardPreview);
 	}
-	
+
 	public boolean loadState(File fp) {
-		try (FileInputStream stream = new FileInputStream(fp)) {	
+		try (FileInputStream stream = new FileInputStream(fp)) {
 			try (ObjectInputStream ostream = new ObjectInputStream(stream)) {
 				CodeInfoSet loaded = (CodeInfoSet) ostream.readObject();
 				editPanel.setInfoSet(loaded);
@@ -48,11 +53,13 @@ public class EditHandler extends BaseHandler {
 		}
 		return true;
 	}
-	
+
 	public boolean saveState(File fp) {
-		try (FileOutputStream stream = new FileOutputStream(fp)) {	
+		revalidatePreview();
+		try (FileOutputStream stream = new FileOutputStream(fp)) {
 			try (ObjectOutputStream istream = new ObjectOutputStream(stream)) {
 				istream.writeObject(lastInfoSet);
+				lastSerialized = lastInfoSet.hashCode();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -60,8 +67,14 @@ public class EditHandler extends BaseHandler {
 		}
 		return true;
 	}
-	
-	private void revalidate() {
+
+	public void revalidatePreview() {
+		if (editPanel == null) {
+			return;
+		}
+
+		editPanel.pagePanel.adjustAll((int) editPanel.layoutPanel.sp_stripes.getValue());
+
 		CodeInfoSet next = editPanel.getInfoSet();
 		if (lastInfoSet == null || !lastInfoSet.equals(next)) {
 			try {
@@ -80,7 +93,7 @@ public class EditHandler extends BaseHandler {
 			JTextField t = (JTextField) evt.getSource();
 			try {
 				Float.parseFloat(t.getText());
-				revalidate();
+				revalidatePreview();
 			} catch (NumberFormatException e) {
 				t.setText("0");
 			}
@@ -89,7 +102,7 @@ public class EditHandler extends BaseHandler {
 
 			// TODO: this is ugly
 			if (item.getText().equals("Export...")) {
-				revalidate();
+				revalidatePreview();
 
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -102,16 +115,16 @@ public class EditHandler extends BaseHandler {
 			}
 		}
 	}
-	
+
 	@Override
 	public void stateChanged(ChangeEvent evt) {
 		if (evt.getSource() instanceof JSpinner) {
-			revalidate();
+			revalidatePreview();
 		}
 	}
 
 	@Override
-	public BasePanel getViewPanel() {
+	public BasePanel getPanel() {
 		return this.editPanel;
 	}
 
@@ -122,7 +135,20 @@ public class EditHandler extends BaseHandler {
 
 	@Override
 	public boolean close() {
-		return editPanel.close();
+		if (!editPanel.close()) {
+			return false;
+		}
+
+		if (lastInfoSet == null || lastSerialized != lastInfoSet.hashCode()) {
+			int confirm = JOptionPane.showConfirmDialog(editPanel, "There are unsaved changes. Do you want to save?");
+			if (confirm == JOptionPane.OK_OPTION) {
+				if (!control.saveState(null)) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	@Override
@@ -133,6 +159,11 @@ public class EditHandler extends BaseHandler {
 	@Override
 	public boolean isValidNumber() {
 		return false;
+	}
+
+	@Override
+	public void setPanel(BasePanel panel) {
+
 	}
 
 }

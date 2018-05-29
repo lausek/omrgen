@@ -1,35 +1,34 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Component;
+import java.util.Enumeration;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import control.InputListener;
-import data.TreeNode;
+import control.handler.BaseHandler;
+import data.CodeInfoSet;
+import data.PageNode;
 
-import javax.swing.JTree;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JList;
 
-public class PagePanel extends BasePanel implements InputListener, TreeSelectionListener {
+public class PagePanel extends BasePanel implements ListCellRenderer<PageNode> {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTree tree;
-	private DefaultTreeModel model;
-	private DefaultMutableTreeNode root;
-	private JButton btnAdd, btnRemove;
-	private TreeNode current;
+	public JList<PageNode> lsPages;
+	public DefaultListModel<PageNode> model;
+	public JButton btnAdd, btnRemove;
 
-	public PagePanel(InputListener listener) {
-		super(listener);
+	public PagePanel(BaseHandler listener, EditPanel parent) {
+		super(listener, parent);
 
 		setLayout(new BorderLayout(0, 0));
 
@@ -37,72 +36,66 @@ public class PagePanel extends BasePanel implements InputListener, TreeSelection
 		add(panel, BorderLayout.SOUTH);
 
 		btnAdd = new JButton("+");
-		btnAdd.addActionListener(this);
+		btnAdd.addActionListener(handler);
 		panel.add(btnAdd);
 
 		btnRemove = new JButton("-");
-		btnRemove.addActionListener(this);
+		btnRemove.addActionListener(handler);
 		panel.add(btnRemove);
 
-		root = new DefaultMutableTreeNode("root");
+		model = new DefaultListModel<>();
 
-		tree = new JTree(root);
-		model = (DefaultTreeModel) tree.getModel();
-		tree.addTreeSelectionListener(this);
-		add(tree, BorderLayout.CENTER);
-	}
-
-	public void setCurrent(int index) {
-		current = (TreeNode) root.getChildAt(index);
-	}
-
-	public TreeNode getCurrent() {
-		return current;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		TreePath[] paths = tree.getSelectionPaths();
-		
-		if (arg0.getSource() == btnAdd) {
-			if (paths != null) {
-				for (TreePath path : paths) {
-					MutableTreeNode n = (MutableTreeNode) path.getLastPathComponent();
-					model.insertNodeInto(new TreeNode(), n, n.getChildCount());
-				}
-			} else {
-				root.add(new TreeNode());
-			}
-		} else if (arg0.getSource() == btnRemove) {
-			// TODO: add check if node is empty
-			if (paths != null) {
-				for (TreePath path : paths) {
-					MutableTreeNode n = (MutableTreeNode) path.getLastPathComponent();
-					if (n.getParent() != null) {
-						model.removeNodeFromParent(n);
-					}
+		lsPages = new JList<>();
+		lsPages.setModel(model);
+		lsPages.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		lsPages.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getValueIsAdjusting()) {
+					parent.revalidatePreview();
 				}
 			}
+		});
+		lsPages.setCellRenderer(this);
+		add(lsPages, BorderLayout.CENTER);
+	}
+
+	public PageNode addPage(int number) {
+		PageNode n = new PageNode("Page " + number);
+		model.addElement(n);
+		return n;
+	}
+
+	public void removePage(int index) {
+		model.removeElementAt(index);
+	}
+
+	public void removePage(int[] indices) {
+		// process in reverse
+		for (int i = indices.length - 1; 0 <= i; i--) {
+			removePage(indices[i]);
+		}
+	}
+
+	public void setInfoSet(CodeInfoSet next) {
+		for (boolean[] actives : next.actives) {
+			addPage(model.getSize() + 1).actives = actives;
+		}
+	}
+
+	public void adjustAll(int size) {
+		Enumeration<PageNode> nodes = model.elements();
+		while (nodes.hasMoreElements()) {
+			PageNode node = nodes.nextElement();
+			node.adjust(size);
 		}
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent arg0) {
-
-	}
-
-	@Override
-	public void changeEvent() {
-	}
-
-	@Override
-	public boolean isValidNumber() {
-		return false;
-	}
-
-	@Override
-	public void valueChanged(TreeSelectionEvent e) {
-
+	public Component getListCellRendererComponent(JList<? extends PageNode> list, PageNode value, int index,
+			boolean isSelected, boolean cellHasFocus) {
+		value.setBackground(isSelected ? Color.ORANGE : Color.WHITE);
+		return value;
 	}
 
 }
