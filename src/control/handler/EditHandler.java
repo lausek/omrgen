@@ -46,6 +46,9 @@ public class EditHandler extends BaseHandler {
 			try (ObjectInputStream ostream = new ObjectInputStream(stream)) {
 				CodeInfoSet loaded = (CodeInfoSet) ostream.readObject();
 				editPanel.setInfoSet(loaded);
+				
+				lastInfoSet = editPanel.getInfoSet();
+				lastSerialized = lastInfoSet.hashCode();
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
