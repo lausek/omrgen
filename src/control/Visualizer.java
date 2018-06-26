@@ -12,6 +12,8 @@ import data.CodeStripe;
 import data.Size.Unit;
 
 public class Visualizer {
+
+	
 	
 	public static BufferedImage toImage(CodeInfoSet codeInfoSet, boolean[] actives) throws LayoutException {
 		int w = codeInfoSet.getWidth().geti(Unit.pixel);
@@ -37,9 +39,10 @@ public class Visualizer {
 			g.setColor(codeInfoSet.foreground);
 			for (int i = 0; i < codeInfoSet.stripes.length; i++) {
 				CodeStripe s = codeInfoSet.stripes[i];
-				
-				if(actives == null || actives[i]) {
-					g.fillRect(offx + s.paddingLeft.geti(Unit.pixel), offy, s.width.geti(Unit.pixel), s.height.geti(Unit.pixel));
+
+				if (actives == null || actives[i]) {
+					g.fillRect(offx + s.paddingLeft.geti(Unit.pixel), offy, s.width.geti(Unit.pixel),
+							s.height.geti(Unit.pixel));
 				}
 
 				offy += s.height.add(s.pitch).geti(Unit.pixel);
@@ -48,17 +51,23 @@ public class Visualizer {
 
 		return b;
 	}
-	
+
 	public static BufferedImage toImage(CodeInfoSet codeInfoSet) throws LayoutException {
-		return codeInfoSet.selected != null ? toImage(codeInfoSet, codeInfoSet.actives.get(codeInfoSet.selected)) : toImage(codeInfoSet, null);
+		return codeInfoSet.selected != null ? toImage(codeInfoSet, codeInfoSet.actives.get(codeInfoSet.selected))
+				: toImage(codeInfoSet, null);
 	}
 
 	// TODO: add throws
 	public static boolean exportToImage(File target, CodeInfoSet codeInfoSet) {
+		int i = 0;
 
 		try {
-			File outFile = new File(target.getAbsolutePath() + "/testfile.jpg");
-			ImageIO.write(toImage(codeInfoSet), "JPG", outFile);
+			for (boolean[] page : codeInfoSet.actives) {
+				i++;
+
+				File outFile = new File(target.getAbsolutePath() + String.format("/page-%d.jpg", i));
+				ImageIO.write(toImage(codeInfoSet, page), "JPG", outFile);
+			}
 		} catch (IOException | LayoutException e) {
 			e.printStackTrace();
 			return false;
