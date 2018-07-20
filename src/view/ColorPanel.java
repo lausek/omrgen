@@ -73,6 +73,10 @@ public class ColorPanel extends BasePanel implements ActionListener {
 		
 	}
 	
+	private Color getInverse(Color c) {
+		return new Color(255-c.getRed(), 255-c.getGreen(), 255-c.getBlue());
+	}
+	
 	public void setInfoSet(CodeInfoSet next) {
 		tf_foreground.setText("" + next.foreground.getRGB());
 		tf_background.setText("" + next.background.getRGB());
@@ -83,16 +87,21 @@ public class ColorPanel extends BasePanel implements ActionListener {
 	}
 
 	public void setColors(java.awt.Color fg, java.awt.Color bg) {
-		if (fg != null) {
-			tf_foreground.setText("" + fg.getRGB());
-		} else {
-			tf_foreground.setText("" + CodeInfoSet.FOREGROUND.getRGB());
+		
+		{
+			int newForeground = fg != null ? fg.getRGB() : CodeInfoSet.FOREGROUND.getRGB();
+			Color c = new Color(newForeground);
+			tf_foreground.setText("" + newForeground);
+			tf_foreground.setForeground(getInverse(c));
+			tf_foreground.setBackground(c);
 		}
-
-		if (bg != null) {
-			tf_background.setText("" + bg.getRGB());
-		} else {
-			tf_background.setText("" + CodeInfoSet.BACKGROUND.getRGB());
+		
+		{
+			int newBackground = bg != null ? bg.getRGB() : CodeInfoSet.BACKGROUND.getRGB();
+			Color c = new Color(newBackground);
+			tf_background.setText("" + newBackground);
+			tf_background.setForeground(getInverse(c));
+			tf_background.setBackground(c);
 		}
 		
 		parent.revalidatePreview();
