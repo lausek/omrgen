@@ -46,7 +46,7 @@ public class EditHandler extends BaseHandler {
 			try (ObjectInputStream ostream = new ObjectInputStream(stream)) {
 				CodeInfoSet loaded = (CodeInfoSet) ostream.readObject();
 				editPanel.setInfoSet(loaded);
-				
+
 				lastInfoSet = editPanel.getInfoSet();
 				lastSerialized = lastInfoSet.hashCode();
 			}
@@ -143,14 +143,13 @@ public class EditHandler extends BaseHandler {
 		}
 
 		if (lastInfoSet == null || lastSerialized != lastInfoSet.hashCode()) {
-			int confirm = JOptionPane.showConfirmDialog(editPanel, "There are unsaved changes. Do you want to save?");
-			if (confirm == JOptionPane.OK_OPTION) {
+			switch (JOptionPane.showConfirmDialog(editPanel, "There are unsaved changes. Do you want to save?")) {
+			case JOptionPane.OK_OPTION:
 				if (!control.saveState(null)) {
 					return false;
 				}
 			}
 		}
-
 		return true;
 	}
 
