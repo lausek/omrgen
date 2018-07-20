@@ -66,10 +66,7 @@ public class EditPanel extends BasePanel {
 		tabbedPane.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if (!((BasePanel) tabbedPane.getSelectedComponent()).open()) {
-					// TODO: block switch to tab
-					System.out.println("Also von mir aus nich...");
-				}
+				((BasePanel) tabbedPane.getSelectedComponent()).open();
 			}
 		});
 	}
