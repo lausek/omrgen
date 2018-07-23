@@ -19,6 +19,7 @@ import javax.imageio.stream.ImageOutputStream;
 import data.CodeInfoSet;
 import data.CodeStripe;
 import data.Size.Unit;
+import data.PageNode;
 
 public class Visualizer {
 	
@@ -65,7 +66,7 @@ public class Visualizer {
 	}
 
 	public static BufferedImage toImage(CodeInfoSet codeInfoSet) throws LayoutException {
-		return codeInfoSet.selected != null ? toImage(codeInfoSet, codeInfoSet.actives.get(codeInfoSet.selected))
+		return codeInfoSet.selected != null ? toImage(codeInfoSet, codeInfoSet.pageNodes.get(codeInfoSet.selected).actives)
 				: toImage(codeInfoSet, null);
 	}
 
@@ -74,7 +75,6 @@ public class Visualizer {
 		ImageWriter iw = null;
 		IIOMetadata metadata = null;
 		ImageWriteParam iwParam = null;
-		int i = 0;
 
 		try {
 			for (Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName(FORMAT); iter.hasNext();) {
@@ -86,12 +86,11 @@ public class Visualizer {
 				break;
 			}
 
-			for (boolean[] page : codeInfoSet.actives) {
-				i++;
-				File outFile = new File(target.getAbsolutePath() + String.format("/page-%d.%s", i, FORMAT));
+			for (PageNode pageNode : codeInfoSet.pageNodes) {
+				File outFile = new File(target.getAbsolutePath() + String.format("/%s.%s", pageNode.name, FORMAT));
 
 				try (ImageOutputStream stream = ImageIO.createImageOutputStream(outFile)) {
-					BufferedImage img = toImage(codeInfoSet, page);
+					BufferedImage img = toImage(codeInfoSet, pageNode.actives);
 					iw.setOutput(stream);
 					iw.write(metadata, new IIOImage(img, null, metadata), iwParam);
 				}

@@ -12,13 +12,13 @@ public class CodeInfoSet implements Serializable {
 	public static final Color BACKGROUND = Color.WHITE;
 
 	public CodeStripe[] stripes;
-	public List<boolean[]> actives;
+	public List<PageNode> pageNodes;
 	public Integer selected;
 	public Size marginLeft, marginRight, marginTop, marginBottom;
 	public Color foreground = FOREGROUND, background = BACKGROUND;
 
 	public CodeInfoSet() {
-		actives = new java.util.ArrayList<>();
+		pageNodes = new java.util.ArrayList<>();
 	}
 	
 	public boolean equals(Object o) {

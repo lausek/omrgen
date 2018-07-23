@@ -86,10 +86,10 @@ public class EditPanel extends BasePanel {
 
 		LayoutInfoSet layout = layoutPanel.getInfoSet();
 
-		c.actives.clear();
+		c.pageNodes.clear();
 		Enumeration<PageNode> pages = pagePanel.model.elements();
 		while (pages.hasMoreElements()) {
-			c.actives.add(pages.nextElement().actives);
+			c.pageNodes.add(pages.nextElement());
 		}
 		
 		if (0 <= pagePanel.lsPages.getSelectedIndex()) {

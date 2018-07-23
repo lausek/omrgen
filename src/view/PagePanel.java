@@ -63,6 +63,7 @@ public class PagePanel extends BasePanel implements ListCellRenderer<PageNode> {
 
 	public PageNode addPage(int number) {
 		PageNode n = new PageNode("Page " + number);
+		n.rename();
 		model.addElement(n);
 		return n;
 	}
@@ -79,8 +80,8 @@ public class PagePanel extends BasePanel implements ListCellRenderer<PageNode> {
 	}
 
 	public void setInfoSet(CodeInfoSet next) {
-		for (boolean[] actives : next.actives) {
-			addPage(model.getSize() + 1).actives = actives;
+		for (PageNode pageNode : next.pageNodes) {
+			addPage(model.getSize() + 1).actives = pageNode.actives;
 		}
 	}
 
