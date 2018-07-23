@@ -83,6 +83,7 @@ public class EditHandler extends BaseHandler {
 			try {
 				standardPreview = Visualizer.toImage(next);
 				editPanel.setPreview(standardPreview);
+				editPanel.layoutPanel.updateTotals(next);
 				lastInfoSet = next;
 			} catch (LayoutException e) {
 				editPanel.displayMessage(MessageType.ERROR, e.getMessage());

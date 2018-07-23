@@ -120,7 +120,7 @@ public class EditPanel extends BasePanel {
 
 	public void setPreview(Image img) {
 		preview.setIcon(new ImageIcon(img));
-		preview.revalidate();
+		preview.revalidate();		
 		scrollPane.revalidate();
 		scrollPane.repaint();
 	}

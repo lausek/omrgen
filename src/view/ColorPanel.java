@@ -34,10 +34,10 @@ public class ColorPanel extends BasePanel implements ActionListener {
 		setLayout(gbl_colorPane);
 
 		tf_foreground = new JTextField();
-		addTextFieldAt(1, 0, "Foreground", tf_foreground);
+		addTextFieldAt(1, 0, "Foreground", tf_foreground, this);
 
 		tf_background = new JTextField();
-		addTextFieldAt(1, 1, "Background", tf_background);
+		addTextFieldAt(1, 1, "Background", tf_background, this);
 
 		btnColorFore = new JButton("...");
 		btnColorFore.addActionListener(this);
