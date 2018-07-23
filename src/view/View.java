@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import control.Control;
@@ -12,16 +14,35 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.UIManager;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
 
 public class View extends JFrame implements ActionListener {
 
+	public enum FileStatus {
+		INITIAL, PENDING, SAVED
+	};
+
 	private static final long serialVersionUID = 1L;
+	private static final int ICON_SIZE = 16;
+	
+	private static ImageIcon iconInfo, iconWarn, iconGood;
+	private static JLabel lblFileStatus;
 
 	private Control control;
 	private BaseHandler currentHandler;
 	private JMenuItem mntmNew, mntmOpen, mntmSaveToOpen, mntmSave, mntmExit;
 	private JSeparator separator_1;
 	private JMenuItem mntmExport;
+	private JPanel orderPanel;
+
+	static {
+		iconInfo = getAndRescale("OptionPane.questionIcon", ICON_SIZE, ICON_SIZE);
+		iconWarn = getAndRescale("OptionPane.warningIcon", ICON_SIZE, ICON_SIZE);
+		iconGood = getAndRescale("OptionPane.informationIcon", ICON_SIZE, ICON_SIZE);
+	}
 
 	public View(Control control) {
 		this.control = control;
@@ -46,7 +67,7 @@ public class View extends JFrame implements ActionListener {
 		mntmSaveToOpen = new JMenuItem("Save");
 		mntmSaveToOpen.addActionListener(this);
 		mnFile.add(mntmSaveToOpen);
-		
+
 		mntmSave = new JMenuItem("Save...");
 		mntmSave.addActionListener(this);
 		mnFile.add(mntmSave);
@@ -64,6 +85,43 @@ public class View extends JFrame implements ActionListener {
 		mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(this);
 		mnFile.add(mntmExit);
+
+		orderPanel = new JPanel();
+		FlowLayout fl_orderPanel = (FlowLayout) orderPanel.getLayout();
+		fl_orderPanel.setAlignment(FlowLayout.RIGHT);
+		menuBar.add(orderPanel);
+
+		lblFileStatus = new JLabel("New label");
+		orderPanel.add(lblFileStatus);
+	}
+
+	private static ImageIcon getAndRescale(String name, int width, int height) {
+		ImageIcon icon = (ImageIcon) UIManager.getIcon(name);
+		if (icon == null) {
+			return icon;
+		}
+		java.awt.Image img = icon.getImage().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+		return new ImageIcon(img);
+	}
+
+	public static void setFileStatus(FileStatus f) {
+		switch (f) {
+		case INITIAL:
+			lblFileStatus.setText("initial");
+			lblFileStatus.setIcon(iconInfo);
+			break;
+
+		case PENDING:
+			lblFileStatus.setText("pending");
+			lblFileStatus.setIcon(iconWarn);
+			break;
+
+		case SAVED:
+			lblFileStatus.setText("saved");
+			lblFileStatus.setIcon(iconGood);
+			break;
+
+		}
 	}
 
 	public boolean close() {
@@ -103,8 +161,7 @@ public class View extends JFrame implements ActionListener {
 
 		if (arg0.getSource() == mntmOpen) {
 			control.loadState(null);
-		} else if (arg0.getSource() == mntmSave
-				|| arg0.getSource() == mntmSaveToOpen) {
+		} else if (arg0.getSource() == mntmSave || arg0.getSource() == mntmSaveToOpen) {
 			control.saveState(null);
 		} else if (arg0.getSource() == mntmExit) {
 			control.exitApplication();

@@ -23,6 +23,8 @@ import data.CodeInfoSet;
 import view.BasePanel;
 import view.BasePanel.MessageType;
 import view.EditPanel;
+import view.View;
+import view.View.FileStatus;
 
 public class EditHandler extends BaseHandler {
 
@@ -36,7 +38,9 @@ public class EditHandler extends BaseHandler {
 	public EditHandler(Control control) {
 		this.control = control;
 		this.editPanel = new EditPanel(this);
-
+		
+		View.setFileStatus(FileStatus.INITIAL);
+		
 		standardPreview = new BufferedImage(100, 200, BufferedImage.TYPE_INT_ARGB);
 
 		editPanel.setPreview(standardPreview);
@@ -55,6 +59,7 @@ public class EditHandler extends BaseHandler {
 				lastInfoSet = editPanel.getInfoSet();
 				lastSerialized = lastInfoSet.hashCode();
 				loadedFile = fp;
+				View.setFileStatus(FileStatus.SAVED);
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -69,6 +74,7 @@ public class EditHandler extends BaseHandler {
 			try (ObjectOutputStream istream = new ObjectOutputStream(stream)) {
 				istream.writeObject(lastInfoSet);
 				lastSerialized = lastInfoSet.hashCode();
+				View.setFileStatus(FileStatus.SAVED);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -90,6 +96,7 @@ public class EditHandler extends BaseHandler {
 				standardPreview = Visualizer.toImage(next);
 				editPanel.setPreview(standardPreview);
 				editPanel.layoutPanel.updateTotals(next);
+				View.setFileStatus(FileStatus.PENDING);
 				lastInfoSet = next;
 			} catch (LayoutException e) {
 				editPanel.displayMessage(MessageType.ERROR, e.getMessage());
