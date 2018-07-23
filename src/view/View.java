@@ -19,7 +19,7 @@ public class View extends JFrame implements ActionListener {
 
 	private Control control;
 	private BaseHandler currentHandler;
-	private JMenuItem mntmNew, mntmOpen, mntmSave, mntmExit;
+	private JMenuItem mntmNew, mntmOpen, mntmSaveToOpen, mntmSave, mntmExit;
 	private JSeparator separator_1;
 	private JMenuItem mntmExport;
 
@@ -43,6 +43,10 @@ public class View extends JFrame implements ActionListener {
 		mntmOpen.addActionListener(this);
 		mnFile.add(mntmOpen);
 
+		mntmSaveToOpen = new JMenuItem("Save");
+		mntmSaveToOpen.addActionListener(this);
+		mnFile.add(mntmSaveToOpen);
+		
 		mntmSave = new JMenuItem("Save...");
 		mntmSave.addActionListener(this);
 		mnFile.add(mntmSave);
@@ -99,7 +103,8 @@ public class View extends JFrame implements ActionListener {
 
 		if (arg0.getSource() == mntmOpen) {
 			control.loadState(null);
-		} else if (arg0.getSource() == mntmSave) {
+		} else if (arg0.getSource() == mntmSave
+				|| arg0.getSource() == mntmSaveToOpen) {
 			control.saveState(null);
 		} else if (arg0.getSource() == mntmExit) {
 			control.exitApplication();

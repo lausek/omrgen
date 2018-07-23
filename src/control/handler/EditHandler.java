@@ -30,6 +30,7 @@ public class EditHandler extends BaseHandler {
 	private EditPanel editPanel;
 	private CodeInfoSet lastInfoSet;
 	private BufferedImage standardPreview;
+	private File loadedFile;
 	private int lastSerialized = 0;
 
 	public EditHandler(Control control) {
@@ -40,15 +41,20 @@ public class EditHandler extends BaseHandler {
 
 		editPanel.setPreview(standardPreview);
 	}
-
+	
+	public File getLoadedFile() {
+		return this.loadedFile;
+	}
+	
 	public boolean loadState(File fp) {
 		try (FileInputStream stream = new FileInputStream(fp)) {
 			try (ObjectInputStream ostream = new ObjectInputStream(stream)) {
 				CodeInfoSet loaded = (CodeInfoSet) ostream.readObject();
 				editPanel.setInfoSet(loaded);
-
+				
 				lastInfoSet = editPanel.getInfoSet();
 				lastSerialized = lastInfoSet.hashCode();
+				loadedFile = fp;
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

@@ -43,23 +43,29 @@ public class Control {
 		if (!editHandler.close()) {
 			return false;
 		}
-		
+
 		if (fp == null) {
 			JFileChooser chooser = new JFileChooser();
 			if (chooser.showOpenDialog(view) == JFileChooser.APPROVE_OPTION) {
 				fp = chooser.getSelectedFile();
 			}
 		}
-		
+
 		return editHandler.loadState(fp);
 	}
 
 	public boolean saveState(File fp) {
 		if (fp == null) {
+			fp = editHandler.getLoadedFile();
+		}
+		if (fp == null) {
 			JFileChooser chooser = new JFileChooser();
 			if (chooser.showSaveDialog(view) == JFileChooser.APPROVE_OPTION) {
 				fp = chooser.getSelectedFile();
 			}
+		}
+		if (fp == null) {
+			return false;
 		}
 		return editHandler.saveState(fp);
 	}
