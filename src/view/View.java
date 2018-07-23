@@ -26,7 +26,7 @@ public class View extends JFrame implements ActionListener {
 	public View(Control control) {
 		this.control = control;
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		setBounds(50, 50, 500, 300);
+		setBounds(50, 50, 500, 380);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
