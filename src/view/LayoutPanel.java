@@ -116,7 +116,7 @@ public class LayoutPanel extends BasePanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		GridBagLayout gbl_infoPanel = new GridBagLayout();
-		gbl_infoPanel.columnWidths = new int[] { 46, 0, 0 };
+		gbl_infoPanel.columnWidths = new int[] { 73, 19, 0 };
 		gbl_infoPanel.rowHeights = new int[] { 14, 0, 0 };
 		gbl_infoPanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		gbl_infoPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
@@ -124,14 +124,17 @@ public class LayoutPanel extends BasePanel {
 
 		JLabel lblTotalWidth = new JLabel("Total width");
 		GridBagConstraints gbc_lblTotalWidth = new GridBagConstraints();
-		gbc_lblTotalWidth.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTotalWidth.anchor = GridBagConstraints.WEST;
+		gbc_lblTotalWidth.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTotalWidth.gridx = 0;
 		gbc_lblTotalWidth.gridy = 0;
 		infoPanel.add(lblTotalWidth, gbc_lblTotalWidth);
 
 		tf_totalWidth = new JLabel("0");
+		lblTotalWidth.setLabelFor(tf_totalWidth);
 		tf_totalWidth.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblTotalWidthVal = new GridBagConstraints();
+		gbc_lblTotalWidthVal.anchor = GridBagConstraints.WEST;
 		gbc_lblTotalWidthVal.insets = new Insets(0, 0, 5, 0);
 		gbc_lblTotalWidthVal.gridx = 1;
 		gbc_lblTotalWidthVal.gridy = 0;
@@ -139,14 +142,17 @@ public class LayoutPanel extends BasePanel {
 
 		JLabel lblTotalHeight = new JLabel("Total height");
 		GridBagConstraints gbc_lblTotalHeight = new GridBagConstraints();
+		gbc_lblTotalHeight.anchor = GridBagConstraints.WEST;
 		gbc_lblTotalHeight.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTotalHeight.gridx = 0;
 		gbc_lblTotalHeight.gridy = 1;
 		infoPanel.add(lblTotalHeight, gbc_lblTotalHeight);
 
 		tf_totalHeight = new JLabel("0");
+		lblTotalHeight.setLabelFor(tf_totalHeight);
 		tf_totalHeight.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblTotalHeightVal = new GridBagConstraints();
+		gbc_lblTotalHeightVal.anchor = GridBagConstraints.WEST;
 		gbc_lblTotalHeightVal.gridx = 1;
 		gbc_lblTotalHeightVal.gridy = 1;
 		infoPanel.add(tf_totalHeight, gbc_lblTotalHeightVal);
