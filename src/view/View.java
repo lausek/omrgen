@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -18,6 +17,7 @@ import javax.swing.UIManager;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 
 public class View extends JFrame implements ActionListener {
 
@@ -27,7 +27,7 @@ public class View extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final int ICON_SIZE = 16;
-	
+
 	private static ImageIcon iconInfo, iconWarn, iconGood;
 	private static JLabel lblFileStatus;
 
@@ -49,6 +49,8 @@ public class View extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		setBounds(50, 50, 500, 380);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage("assets/img/icon.png"));
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -91,7 +93,7 @@ public class View extends JFrame implements ActionListener {
 		fl_orderPanel.setAlignment(FlowLayout.RIGHT);
 		menuBar.add(orderPanel);
 
-		lblFileStatus = new JLabel("New label");
+		lblFileStatus = new JLabel();
 		orderPanel.add(lblFileStatus);
 	}
 
