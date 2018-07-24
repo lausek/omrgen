@@ -55,6 +55,8 @@ public class View extends JFrame implements ActionListener {
 			setIconImage(Toolkit.getDefaultToolkit().getImage(url));
 		}
 
+		setIconImage(Toolkit.getDefaultToolkit().getImage("assets/img/icon.png"));
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
